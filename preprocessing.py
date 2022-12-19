@@ -7,6 +7,7 @@ import pandas as pd
 from sklearn.model_selection import train_test_split
 from sklearn.compose import ColumnTransformer
 from sklearn.preprocessing import StandardScaler
+from tensorflow.keras.utils import to_categorical
 
 def load_data(): # Assimilates data from CSV file and seperates into data and labels
     data_frame = pd.read_csv("data/cover_data.csv") # Loads data from CSV file
@@ -18,3 +19,8 @@ data_train, data_valid, labels_train, labels_valid = train_test_split(data, labe
 transfomer = ColumnTransformer([("numeric", StandardScaler(), ["Elevation","Aspect","Slope","Horizontal_Distance_To_Hydrology","Vertical_Distance_To_Hydrology","Horizontal_Distance_To_Roadways","Hillshade_9am","Hillshade_Noon","Hillshade_3pm","Horizontal_Distance_To_Fire_Points"])]) # Establishes a transformer to apply data normalisation
 data_train = transfomer.fit_transform(data_train) # Trains transformer on training data to normalise data
 data_valid = transfomer.transform(data_valid) # Normalises data after training the transformer
+
+"""A LabelEncoder transformer is not needed as labels are already numerical in the dataset"""
+
+labels_train = to_categorical(labels_train) # Transformers training and validation datasets into binary vectors
+labels_valid = to_categorical(labels_valid)
