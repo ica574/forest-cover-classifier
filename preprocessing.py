@@ -10,7 +10,6 @@ from sklearn.preprocessing import StandardScaler, LabelEncoder
 from tensorflow.keras.utils import to_categorical
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import InputLayer, Dense
-import numpy as np
 from sklearn.metrics import classification_report
 
 def load_data(): # Assimilates data from CSV file and seperates into data and labels
