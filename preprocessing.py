@@ -6,8 +6,12 @@
 import pandas as pd
 from sklearn.model_selection import train_test_split
 from sklearn.compose import ColumnTransformer
-from sklearn.preprocessing import StandardScaler
+from sklearn.preprocessing import StandardScaler, LabelEncoder
 from tensorflow.keras.utils import to_categorical
+from tensorflow.keras.models import Sequential
+from tensorflow.keras.layers import InputLayer, Dense
+import numpy as np
+from sklearn.metrics import classification_report
 
 def load_data(): # Assimilates data from CSV file and seperates into data and labels
     data_frame = pd.read_csv("data/cover_data.csv") # Loads data from CSV file
@@ -20,7 +24,18 @@ transfomer = ColumnTransformer([("numeric", StandardScaler(), ["Elevation","Aspe
 data_train = transfomer.fit_transform(data_train) # Trains transformer on training data to normalise data
 data_valid = transfomer.transform(data_valid) # Normalises data after training the transformer
 
-"""A LabelEncoder transformer is not needed as labels are already numerical in the dataset"""
+le = LabelEncoder() # Converts class labels into integers appropriate for the neural network
+labels_train = le.fit_transform(labels_train.astype(str)) # Fits the LabelEncoder() object to a training dataset
+labels_valid = le.transform(labels_valid.astype(str)) # Applies the transform to the validation dataset
 
-labels_train = to_categorical(labels_train) # Transformers training and validation datasets into binary vectors
+labels_train = to_categorical(labels_train) # Transforms training and validation datasets into binary vectors
 labels_valid = to_categorical(labels_valid)
+
+"""Neural network model"""
+model = Sequential()
+model.add(InputLayer(input_shape=(data_train.shape[1],))) # Input layer with number of neurons dependent upon dimensions of training data
+model.add(Dense(12, activation='relu')) # Hidden layer that uses rectified linear unit as an activation function for each neuron
+model.add(Dense(7, activation='softmax')) # Output layer with 7 neurons, one for every possible classification that uses the softmax activation function
+
+model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy']) # Compiles the model
+model.fit(data_train, labels_train, epochs=3, batch_size=16) # Trains the model
