@@ -11,6 +11,7 @@ from tensorflow.keras.utils import to_categorical
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import InputLayer, Dense
 from sklearn.metrics import classification_report
+import numpy as np
 
 def load_data(): # Assimilates data from CSV file and seperates into data and labels
     data_frame = pd.read_csv("data/cover_data.csv") # Loads data from CSV file
@@ -38,3 +39,9 @@ model.add(Dense(7, activation='softmax')) # Output layer with 7 neurons, one for
 
 model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy']) # Compiles the model
 model.fit(data_train, labels_train, epochs=3, batch_size=16) # Trains the model
+
+prediction_estimate = model.predict(data_valid) # Uses the trained model to generate predictions
+prediction_estimate = np.argmax(prediction_estimate, axis=1) # Returns only the most probable predictions from every label
+actual_values = np.argmax(labels_valid, axis=1)
+
+print(classification_report(actual_values, prediction_estimate)) # Prints a classification report with results of the predictions
