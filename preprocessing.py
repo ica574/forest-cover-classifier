@@ -35,6 +35,7 @@ labels_valid = to_categorical(labels_valid)
 model = Sequential()
 model.add(InputLayer(input_shape=(data_train.shape[1],))) # Input layer with number of neurons dependent upon dimensions of training data
 model.add(Dense(12, activation='relu')) # Hidden layer that uses rectified linear unit as an activation function for each neuron
+model.add(Dense(12, activation='relu'))
 model.add(Dense(7, activation='softmax')) # Output layer with 7 neurons, one for every possible classification that uses the softmax activation function
 
 model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy']) # Compiles the model
