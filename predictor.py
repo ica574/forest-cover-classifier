@@ -8,10 +8,14 @@ from sklearn.metrics import classification_report
 from tensorflow.keras.models import load_model
 import numpy as np
 
+"""Preprocessor class instantiation and feature and label preprocessing"""
 preprocessor = Preprocessing()
+preprocessor.data_normaliser()
+preprocessor.label_vectoriser()
 
-data_train, data_valid = preprocessor.data_normaliser()
-labels_train, labels_valid = preprocessor.label_vectoriser()
+"""Retrieval of features and labels after preprocessing"""
+data_train, data_valid = preprocessor.get_data()
+labels_train, labels_valid = preprocessor.get_labels()
 
 model = load_model("model/classifier.h5")
 

@@ -21,7 +21,6 @@ class Preprocessing:
         self.transfomer = ColumnTransformer([("numeric", StandardScaler(), ["Elevation","Aspect","Slope","Horizontal_Distance_To_Hydrology","Vertical_Distance_To_Hydrology","Horizontal_Distance_To_Roadways","Hillshade_9am","Hillshade_Noon","Hillshade_3pm","Horizontal_Distance_To_Fire_Points"])]) # Establishes a transformer to apply data normalisation
         self.data_train = self.transfomer.fit_transform(self.data_train) # Trains transformer on training data to normalise data
         self.data_valid = self.transfomer.transform(self.data_valid) # Normalises data after training the transformer
-        return self.data_train, self.data_valid
 
     def label_vectoriser(self): # Transforms labels into vectors
         self.le = LabelEncoder() # Converts class labels into integers appropriate for the neural network
@@ -29,4 +28,9 @@ class Preprocessing:
         self.labels_valid = self.le.transform(self.labels_valid.astype(str)) # Applies the transform to the validation dataset
         self.labels_train = to_categorical(self.labels_train) # Transforms training and validation datasets into binary vectors
         self.labels_valid = to_categorical(self.labels_valid)
+    
+    def get_data(self):
+        return self.data_train, self.data_valid
+
+    def get_labels(self):
         return self.labels_train, self.labels_valid

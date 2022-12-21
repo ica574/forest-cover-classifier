@@ -7,10 +7,14 @@ from preprocessing import Preprocessing
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import InputLayer, Dense
 
+"""Preprocessor class instantiation and feature and label preprocessing"""
 preprocessor = Preprocessing()
+preprocessor.data_normaliser()
+preprocessor.label_vectoriser()
 
-data_train, data_valid = preprocessor.data_normaliser()
-labels_train, labels_valid = preprocessor.label_vectoriser()
+"""Retrieval of features and labels after preprocessing"""
+data_train, data_valid = preprocessor.get_data()
+labels_train, labels_valid = preprocessor.get_labels()
 
 model = Sequential()
 model.add(InputLayer(input_shape=(data_train.shape[1],))) # Input layer with number of neurons dependent upon dimensions of training data
