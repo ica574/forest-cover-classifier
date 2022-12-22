@@ -28,7 +28,10 @@ class Preprocessing:
         self.labels_valid = self.le.transform(self.labels_valid.astype(str)) # Applies the transform to the validation dataset
         self.labels_train = to_categorical(self.labels_train) # Transforms training and validation datasets into binary vectors
         self.labels_valid = to_categorical(self.labels_valid)
-    
+
+    def get_unprocessed(self):
+        return self.data, self.labels
+        
     def get_data(self):
         return self.data_train, self.data_valid
 
